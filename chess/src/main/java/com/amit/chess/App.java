@@ -18,7 +18,7 @@ public class App {
 		frame.setLocationRelativeTo(null);
 
 		Board board = new Board();
-		frame.add(board);
+		frame.add(board); 
 
 		frame.setVisible(true);
 	}
