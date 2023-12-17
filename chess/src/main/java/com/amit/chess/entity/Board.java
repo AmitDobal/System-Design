@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 import javax.swing.JPanel;
@@ -19,7 +20,7 @@ import com.amit.chess.entity.pieces.Rook;
 
 public class Board extends JPanel {
 
-	public int tileSize = 85;
+	public int tileSize = 70;
 
 	int cols = 8;
 	int rows = 8;
@@ -40,13 +41,9 @@ public class Board extends JPanel {
 	}
 
 	public Piece getPiece(int col, int row) {
-		for (Piece piece : pieceList) {
-			if (piece.col == col && piece.row == row) {
-				return piece;
-			}
-		}
-//		pieceList.stream().filter(piece -> piece.col == col && piece.row == row).findFirst().get();
-		return null;
+		Optional<Piece> pieceFoundOptional = pieceList.stream().filter(piece -> piece.col == col && piece.row == row)
+				.findFirst();
+		return pieceFoundOptional.isPresent() ? pieceFoundOptional.get() : null;
 	}
 
 	public void makeMove(Move move) {

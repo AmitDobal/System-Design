@@ -20,4 +20,37 @@ public class Pawn extends Piece {
 				.getScaledInstance(board.tileSize, board.tileSize, BufferedImage.SCALE_SMOOTH);
 	}
 
+	public boolean isValidMovement(int col, int row) {
+		return ( Math.abs(this.row - row) == 1 ||  Math.abs(this.row - row) == 2) && this.col == col; 
+	}
+
+	public boolean moveCollidesWithPiece(int col, int row) {
+
+		// Left
+		if (this.col > col)
+			for (int c = this.col - 1; c > col; c--)
+				if (board.getPiece(c, this.row) != null)
+					return true;
+
+		// Right
+		if (this.col < col)
+			for (int c = this.col + 1; c < col; c++)
+				if (board.getPiece(c, this.row) != null)
+					return true;
+		
+		// Up
+		if (this.row > row)
+			for (int r = this.row - 1; r > row; r--)
+				if (board.getPiece(this.col, r) != null)
+					return true;
+
+		// Down
+		if (this.row < row)
+			for (int r = this.row + 1; r < row; r++)
+				if (board.getPiece(this.col, r) != null)
+					return true;
+
+		return false;
+	}
+
 }
