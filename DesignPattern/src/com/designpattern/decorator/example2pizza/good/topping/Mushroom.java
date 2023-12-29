@@ -1,19 +1,19 @@
 package com.designpattern.decorator.example2pizza.good.topping;
 
-import com.designpattern.decorator.example2pizza.good.base.BasePizza;
+import com.designpattern.decorator.example2pizza.good.pizza.Pizza;
 
 public class Mushroom extends ToppingDecorator {
 
-	BasePizza basePizza;
+	Pizza pizza;
 	
-	public Mushroom(BasePizza basePizza) {
-		this.basePizza = basePizza;
+	public Mushroom(Pizza pizza) {
+		this.pizza = pizza;
 	}
 
 
 	@Override
 	public int cost() {
-		return basePizza.cost() + 35;
+		return pizza.cost() + 35;
 	}
 
 }
