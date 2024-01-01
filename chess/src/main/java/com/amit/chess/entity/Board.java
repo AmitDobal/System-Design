@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 import javax.swing.JPanel;
@@ -19,7 +20,7 @@ import com.amit.chess.entity.pieces.Rook;
 
 public class Board extends JPanel {
 
-	public int tileSize = 85;
+	public int tileSize = 70;
 
 	int cols = 8;
 	int rows = 8;
@@ -27,26 +28,22 @@ public class Board extends JPanel {
 	ArrayList<Piece> pieceList = new ArrayList<>();
 
 	public Piece selectedPiece;
-	
+
 	public Input input = new Input(this);
-	
+
 	public Board() {
 		this.setPreferredSize(new Dimension(rows * tileSize, cols * tileSize));
-		
+
 		this.addMouseListener(input);
 		this.addMouseMotionListener(input);
-		
+
 		addPieces();
 	}
 
 	public Piece getPiece(int col, int row) {
-		for(Piece piece : pieceList) {
-			if(piece.col == col && piece.row == row) {
-				return piece;
-			}
-		}
-//		pieceList.stream().filter(piece -> piece.col == col && piece.row == row).findFirst().get();
-		return null;
+		Optional<Piece> pieceFoundOptional = pieceList.stream().filter(piece -> piece.col == col && piece.row == row)
+				.findFirst();
+		return pieceFoundOptional.isPresent() ? pieceFoundOptional.get() : null;
 	}
 
 	public void makeMove(Move move) {
@@ -64,9 +61,15 @@ public class Board extends JPanel {
 	}
 
 	public boolean isValidMove(Move move) {
-		
-		if(sameTeam(move.piece, move.capture)) return false;
-		
+
+		if (sameTeam(move.piece, move.capture))
+			return false;
+		if (!move.piece.isValidMovement(move.newCol, move.newRow))
+			return false;
+
+		if (move.piece.moveCollidesWithPiece(move.newCol, move.newRow))
+			return false;
+
 		return true;
 	}
 
@@ -106,13 +109,23 @@ public class Board extends JPanel {
 	public void paintComponent(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 
+		// Paint the board
 		for (int r = 0; r < rows; r++)
 			for (int c = 0; c < cols; c++) {
 				g2d.setColor((c + r) % 2 == 0 ? new Color(230, 200, 180) : new Color(160, 105, 55));
 				g2d.fillRect(c * tileSize, r * tileSize, tileSize, tileSize);
-
 			}
 
+		// Paint Highlights
+		if (selectedPiece != null)
+			for (int r = 0; r < rows; r++)
+				for (int c = 0; c < cols; c++) {
+					if (isValidMove(new Move(this, selectedPiece, c, r))) {
+						g2d.setColor(new Color(70, 180, 60, 190));
+						g2d.fillRect(c * tileSize, r * tileSize, tileSize, tileSize);
+					}
+				}
+		// Paint pieces
 		for (Piece piece : pieceList) {
 			piece.paint(g2d);
 		}
