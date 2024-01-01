@@ -1,4 +1,4 @@
-package com.designpattern.strategy.example1;
+                                                                                                                                                                                              package com.designpattern.strategy.example1;
 
 import com.designpattern.strategy.example1.entity.Item;
 import com.designpattern.strategy.example1.payment.CreditCard;
