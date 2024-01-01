@@ -72,7 +72,7 @@ public class Game {
 	}
 
 	private boolean isWin(int[] moves, Player player) {
-		boolean isWinner = this.board.isWin(moves, player);
+		boolean isWinner = this.board.isWinner(moves, player);
 		return isWinner;
 	}
 

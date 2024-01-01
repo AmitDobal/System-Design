@@ -44,7 +44,7 @@ public class Board {
 		}
 	}
 
-	public boolean isWin(int[] moves, Player player) {
+	public boolean isWinner(int[] moves, Player player) {
 		int row = moves[0];
 		int col = moves[1];
 		boolean isHorizontal = isHorizontal(row, player.getSymbol());
